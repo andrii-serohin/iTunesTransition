@@ -79,10 +79,11 @@ extension PresentationController: UIViewControllerAnimatedTransitioning {
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        
         guard let presented = presentedView else { return }
         guard let container = containerView else { return }
       
-        guard let presentedController = presentedViewController as? TrackDetailsViewController else { return }
+        guard let presentedController = presentedViewController as? FlexibleViewController else { return }
         guard let presentingController = presentingViewController as? PlayerTabBarViewController else { return }
         guard let contentView = presentingController.selectedViewController?.view else { return }
         
@@ -103,7 +104,7 @@ extension PresentationController: UIViewControllerAnimatedTransitioning {
                 self.snapshotConstarint?.constant = 0
                 self.presentedControllerTopConstarint?.constant = presentingController.player.frame.origin.y - presentedController.view.transform.ty
                 self.presentedControllerHeightConstarint?.constant = Constants.playerHeight
-                presentedController.shrinkContent()
+                presentedController.onShrink()
                 container.layoutIfNeeded()
                 
                 presented.layer.cornerRadius = 0
@@ -133,18 +134,11 @@ extension PresentationController: UIViewControllerAnimatedTransitioning {
         presentedControllerTopConstarint?.isActive = true
         presentedControllerHeightConstarint?.isActive = true
         
-        let separator = presentingController.tabBar.subviews.first?.subviews.first(where: { $0 is UIImageView })?.snapshotView(afterScreenUpdates: false)
-        tabBarSnapshot = presentingController.tabBar.snapshotView(afterScreenUpdates: true)
-        
-        if let separator = separator, let tabBarSnapshot = tabBarSnapshot {
-            tabBarSnapshot.addSubview(separator)
-            separator.leftAnchor.constraint(lessThanOrEqualTo: tabBarSnapshot.leftAnchor)
-            separator.rightAnchor.constraint(lessThanOrEqualTo: tabBarSnapshot.rightAnchor)
-            separator.bottomAnchor.constraint(equalTo: tabBarSnapshot.topAnchor)
-            separator.heightAnchor.constraint(equalToConstant: separator.bounds.height)
+        tabBarSnapshot = presentingController.tabBar.snapshot
+        tabBarSnapshot.flatMap {
+            container.addSubview($0)
         }
         
-        container.addSubview(tabBarSnapshot!)
         tabBarSnapshot?.translatesAutoresizingMaskIntoConstraints = false
     
         NSLayoutConstraint.activate([tabBarSnapshot?.leftAnchor.constraint(equalTo: container.leftAnchor),
@@ -173,7 +167,7 @@ extension PresentationController: UIViewControllerAnimatedTransitioning {
                         
             self.snapshotConstarint?.constant = self.tabBarSnapshot!.bounds.height
                         
-            presentedController.expandContent()
+            presentedController.onExpand()
             self.presentedControllerHeightConstarint?.constant = container.bounds.height - Constants.musicDetailsTopPadding
             self.presentedControllerTopConstarint?.constant = Constants.musicDetailsTopPadding
             container.layoutIfNeeded()

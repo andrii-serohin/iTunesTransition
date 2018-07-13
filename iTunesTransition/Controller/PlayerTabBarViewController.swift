@@ -88,23 +88,23 @@ extension PlayerTabBarViewController: UIViewControllerTransitioningDelegate {
     
 }
 
-extension PlayerTabBarViewController: TrackDetailsViewControllerDelegate {
+extension PlayerTabBarViewController: FlexibleViewControllerDelegate {
     
-    func trackDetailsViewController(_ viewController: TrackDetailsViewController, whanUpdate progress: CGFloat) {
-        
-        guard let selectedView = selectedViewController?.view else { return }
-        let persent = Constants.statusBarHeight * 1.5 / view.bounds.height
-        selectedView.transform = CGAffineTransform.identity.scaledBy(x: scaleFactor + persent * progress,
-                                                                     y: scaleFactor + persent * progress)
+    var dismissThreshold: CGFloat {
+        return player.frame.origin.y
     }
     
-    func dismissThreshold(for: TrackDetailsViewController) -> CGFloat {
-        return player.frame.origin.y
+    func flexibleViewController(_ viewController: FlexibleViewController, updateProgress current: CGFloat) {
+        guard let selectedView = selectedViewController?.view else { return }
+        let persent = Constants.statusBarHeight * 1.5 / view.bounds.height
+        let scale = scaleFactor + persent * current
+        selectedView.transform = CGAffineTransform.identity.scaledBy(x: scale,
+                                                                     y: scale)
     }
     
 }
 
-extension PlayerTabBarViewController: PresentInteractiveDelegate {
+extension PlayerTabBarViewController: PercentInteractiveDelegate {
     
     func percentAnimatorWantInteract(_ animator: PercentInteractiveAnimator) {
         presentTrackDetails()

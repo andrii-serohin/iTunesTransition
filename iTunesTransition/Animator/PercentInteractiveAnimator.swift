@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol PresentInteractiveDelegate : class {
+protocol PercentInteractiveDelegate : class {
     func percentAnimatorWantInteract(_ animator: PercentInteractiveAnimator)
 }
 
@@ -18,7 +18,7 @@ class PercentInteractiveAnimator: UIPercentDrivenInteractiveTransition {
     private var view: UIView
     private var needComplete = false
     
-    weak var delegate: PresentInteractiveDelegate?
+    weak var delegate: PercentInteractiveDelegate?
     
     init(source view: UIView) {
         self.view = view

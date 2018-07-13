@@ -17,8 +17,11 @@
 		76774FF2204D78DD008B6F3D /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76774FF1204D78DD008B6F3D /* PlayerView.swift */; };
 		76774FF7204D84AB008B6F3D /* TrackDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76774FF6204D84AB008B6F3D /* TrackDetailsViewController.swift */; };
 		76774FF9204D96FB008B6F3D /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76774FF8204D96FB008B6F3D /* PresentationController.swift */; };
-		B152B85520DE3E1B00B9252A /* UIViewController+ScrollViewDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B152B85420DE3E1B00B9252A /* UIViewController+ScrollViewDetection.swift */; };
-		B152B85920DE453100B9252A /* ScrollUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = B152B85820DE453100B9252A /* ScrollUpdater.swift */; };
+		B152B85520DE3E1B00B9252A /* UIView+ScrollViewDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B152B85420DE3E1B00B9252A /* UIView+ScrollViewDetection.swift */; };
+		B152B85920DE453100B9252A /* BounceResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B152B85820DE453100B9252A /* BounceResolver.swift */; };
+		B154BE6720F8D73000B6FCF3 /* FlexibleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B154BE6620F8D73000B6FCF3 /* FlexibleViewController.swift */; };
+		B154BE6920F8E07C00B6FCF3 /* UITabBar+Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B154BE6820F8E07C00B6FCF3 /* UITabBar+Snapshot.swift */; };
+		B154BE6B20F8E66D00B6FCF3 /* AdditionalTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B154BE6A20F8E66D00B6FCF3 /* AdditionalTabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,8 +48,11 @@
 		76774FF1204D78DD008B6F3D /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		76774FF6204D84AB008B6F3D /* TrackDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailsViewController.swift; sourceTree = "<group>"; };
 		76774FF8204D96FB008B6F3D /* PresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
-		B152B85420DE3E1B00B9252A /* UIViewController+ScrollViewDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ScrollViewDetection.swift"; sourceTree = "<group>"; };
-		B152B85820DE453100B9252A /* ScrollUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollUpdater.swift; sourceTree = "<group>"; };
+		B152B85420DE3E1B00B9252A /* UIView+ScrollViewDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ScrollViewDetection.swift"; sourceTree = "<group>"; };
+		B152B85820DE453100B9252A /* BounceResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BounceResolver.swift; sourceTree = "<group>"; };
+		B154BE6620F8D73000B6FCF3 /* FlexibleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleViewController.swift; sourceTree = "<group>"; };
+		B154BE6820F8E07C00B6FCF3 /* UITabBar+Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITabBar+Snapshot.swift"; sourceTree = "<group>"; };
+		B154BE6A20F8E66D00B6FCF3 /* AdditionalTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalTabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +76,7 @@
 		4CFB10C8204F791F0053C27C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				B154BE6C20F8EEF800B6FCF3 /* Core */,
 				76774FEE204D739F008B6F3D /* PlayerTabBarViewController.swift */,
 				76774FF6204D84AB008B6F3D /* TrackDetailsViewController.swift */,
 			);
@@ -131,7 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				B152B85720DE450100B9252A /* Extensions */,
-				B152B85820DE453100B9252A /* ScrollUpdater.swift */,
+				B152B85820DE453100B9252A /* BounceResolver.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -139,9 +146,19 @@
 		B152B85720DE450100B9252A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				B152B85420DE3E1B00B9252A /* UIViewController+ScrollViewDetection.swift */,
+				B152B85420DE3E1B00B9252A /* UIView+ScrollViewDetection.swift */,
+				B154BE6820F8E07C00B6FCF3 /* UITabBar+Snapshot.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B154BE6C20F8EEF800B6FCF3 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				B154BE6A20F8E66D00B6FCF3 /* AdditionalTabBarController.swift */,
+				B154BE6620F8D73000B6FCF3 /* FlexibleViewController.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,15 +264,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B154BE6920F8E07C00B6FCF3 /* UITabBar+Snapshot.swift in Sources */,
 				76774FEF204D739F008B6F3D /* PlayerTabBarViewController.swift in Sources */,
 				76774FF2204D78DD008B6F3D /* PlayerView.swift in Sources */,
-				B152B85920DE453100B9252A /* ScrollUpdater.swift in Sources */,
+				B152B85920DE453100B9252A /* BounceResolver.swift in Sources */,
 				76774FCF204D7176008B6F3D /* AppDelegate.swift in Sources */,
 				4CFB10CE204F963A0053C27C /* PercentInteractiveAnimator.swift in Sources */,
 				76774FF7204D84AB008B6F3D /* TrackDetailsViewController.swift in Sources */,
 				76774FF9204D96FB008B6F3D /* PresentationController.swift in Sources */,
+				B154BE6B20F8E66D00B6FCF3 /* AdditionalTabBarController.swift in Sources */,
+				B154BE6720F8D73000B6FCF3 /* FlexibleViewController.swift in Sources */,
 				4CFB10CA204F7A0F0053C27C /* Constants.swift in Sources */,
-				B152B85520DE3E1B00B9252A /* UIViewController+ScrollViewDetection.swift in Sources */,
+				B152B85520DE3E1B00B9252A /* UIView+ScrollViewDetection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
