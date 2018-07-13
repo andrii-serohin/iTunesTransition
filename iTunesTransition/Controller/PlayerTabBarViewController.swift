@@ -14,7 +14,7 @@ class PlayerTabBarViewController: UITabBarController {
     
     var animator: PresentationController?
     var interactiveAnimator: PercentInteractiveAnimator?
-
+    
     private var scaleFactor: CGFloat {
         guard let container = view else { return 0 }
         let persent = Constants.statusBarHeight * 1.5 / container.bounds.height
@@ -23,9 +23,10 @@ class PlayerTabBarViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tabBar.barTintColor = .white
         
-        player  = PlayerView()
+        player = PlayerView()
         player.translatesAutoresizingMaskIntoConstraints = false
         view.insertSubview(player, belowSubview: tabBar)
         NSLayoutConstraint.activate([player.leftAnchor.constraint(equalTo: view.leftAnchor),
@@ -52,6 +53,7 @@ class PlayerTabBarViewController: UITabBarController {
         controller.delegate = self
         present(controller, animated: true, completion: nil)
     }
+
 }
 
 @objc extension PlayerTabBarViewController {
@@ -82,6 +84,7 @@ extension PlayerTabBarViewController: UIViewControllerTransitioningDelegate {
     func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         return interactiveAnimator
     }
+    
     
 }
 

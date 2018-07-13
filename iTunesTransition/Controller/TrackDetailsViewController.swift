@@ -143,12 +143,10 @@ class TrackDetailsViewController: UIViewController {
         let threshold = delegate?.dismissThreshold(for: self) ?? 350
         
         guard translation >= 0 else { return }
-//        delegate?.trackDetailsViewController(self, whanUpdate: value)
-        view.transform = CGAffineTransform(translationX: 0,
-                                           y: elasticTranslation(for: translation))
-        
+        delegate?.trackDetailsViewController(self, whanUpdate: value)
+        view.transform = scrollUpdater?.normalizeY(translation: elasticTranslation(for: translation)) ?? .identity
+
         if translation >= threshold {
-            print("if translation >= threshold")
             dismiss(animated: true)
         }
         
@@ -167,7 +165,6 @@ class TrackDetailsViewController: UIViewController {
         let friction = 30 * atan(length / 120) + length / 3
         return friction + (threshold * factor)
         
-        
     }
     
     
@@ -183,26 +180,31 @@ class TrackDetailsViewController: UIViewController {
         dismiss(animated: true)
     }
     
-
-    
     private func handlePan(gesture: UIPanGestureRecognizer) {
         
-        guard gesture.isEqual(panGesture), isAllowDismisSwipe else { return }
+        guard !isBeingDismissed else {
+            gesture.isEnabled = false
+            return
+        }
+        
+        guard gesture.isEqual(panGesture), isAllowDismisSwipe  else { return }
         
         let transition = gesture.translation(in: view)
         let progress = transition.y / (view.frame.height - Constants.playerHeight)
-
+        
         switch gesture.state {
         case .began:
-            guard let scrollView = detectedScrollView else { return }
+            
+            guard scrollUpdater == nil, let scrollView = detectedScrollView else { return }
             scrollUpdater = ScrollUpdater(rootView: self.view, scrollView: scrollView)
+            
         case .changed:
             
             guard isAllowDismisSwipe else { return }
             updatePresentedView(for: transition.y, onProgress: progress)
             
         case .ended:
-            
+
             guard isAllowDismisSwipe else { return }
             
             guard progress > 0.2 else {
@@ -213,10 +215,9 @@ class TrackDetailsViewController: UIViewController {
                     self.delegate?.trackDetailsViewController(self, whanUpdate: 0)
                     self.view.transform = .identity
                 })
-                scrollUpdater = nil
                 return
             }
-            print("dismiss(animated: true)")
+            
             dismiss(animated: true)
             
         default:
@@ -230,8 +231,8 @@ class TrackDetailsViewController: UIViewController {
 extension TrackDetailsViewController: UIGestureRecognizerDelegate {
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        guard gestureRecognizer.isEqual(panGesture) else { return false }
-        return true
+        return gestureRecognizer.isEqual(panGesture)
     }
     
 }
+

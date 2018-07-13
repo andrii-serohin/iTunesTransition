@@ -45,7 +45,7 @@
         <!--Player Tab Bar View Controller-->
         <scene sceneID="gJt-SO-gRp">
             <objects>
-                <tabBarController id="eHK-SK-HM1" customClass="PlayerTabBarViewController" customModule="AppleMusicTransition" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController id="eHK-SK-HM1" customClass="PlayerTabBarViewController" customModule="iTunesTransition" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ta7-rh-frF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>

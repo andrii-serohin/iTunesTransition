@@ -8,35 +8,71 @@
 
 import UIKit
 
-final class ScrollUpdater {
+fileprivate class TransformUtility {
     
-    var isDismissEnabled = false
+    var scrollUpdater: ScrollUpdater
+    var isNeedNormalize: Bool = false
+    
+    private var deltaY: CGFloat?
+    
+    init(scrollUpdater: ScrollUpdater) {
+        self.scrollUpdater = scrollUpdater
+    }
+    
+    func normalizeY(translation: CGFloat) -> CGAffineTransform {
+        
+        var originalTransform = scrollUpdater.currentTransform.ty
+        if let deltaY = deltaY {
+            originalTransform -= deltaY
+        }
+        
+        let translationY = isNeedNormalize ? originalTransform + translation : translation
+        deltaY = translation
+        return CGAffineTransform(translationX: 0,
+                                 y: translationY)
+        
+    }
+}
+
+final class ScrollUpdater: NSObject {
+    
+    private(set) var isDismissEnabled = false
     
     private weak var rootView: UIView?
     private weak var scrollView: UIScrollView?
-    private var observer: NSKeyValueObservation?
-
+    private var transformNormalizer: TransformUtility?
+    
     private var scrollOffset: CGFloat {
-        guard let scrollView = scrollView else { return 0.0 }
+        guard let scrollView = scrollView else {
+            return 0.0
+        }
         let scrollOffset = scrollView.contentOffset.y + scrollView.contentInset.top
         guard #available(iOS 11, *) else { return scrollOffset }
         return scrollOffset + scrollView.safeAreaInsets.top
     }
     
-    var isDecelerating: Bool {
-        return scrollView?.isDecelerating ?? false
+    
+    
+    var currentTransform: CGAffineTransform {
+        return rootView?.transform ?? .identity
     }
+
     
     init(rootView: UIView, scrollView: UIScrollView) {
+        super.init()
         self.rootView = rootView
         self.scrollView = scrollView
-        self.observer = scrollView.observe(\.contentOffset, options: [.initial]) { [weak self] (_, _) in
-            self?.scrollViewDidScroll()
-        }
-        
+        scrollView.delegate = self
+        transformNormalizer = TransformUtility(scrollUpdater: self)
+    }
+    
+    func normalizeY(translation: CGFloat) -> CGAffineTransform? {
+        return transformNormalizer?.normalizeY(translation: translation)
     }
     
     private func scrollViewDidScroll() {
+        
+        let isDecelerating = scrollView?.isDecelerating ?? false
         
         guard scrollOffset <= 0 else {
             scrollView?.bounces = true
@@ -45,19 +81,37 @@ final class ScrollUpdater {
         }
         
         guard isDecelerating else {
+            
+            if scrollView!.isTracking {
+                transformNormalizer?.isNeedNormalize = true
+                scrollView?.subviews.forEach {
+                    $0.transform = CGAffineTransform(translationX: 0, y: self.scrollOffset)
+                }
+            }
+            
             scrollView?.bounces = false
             isDismissEnabled = true
             return
         }
         
         rootView?.transform = CGAffineTransform(translationX: 0, y: -scrollOffset)
-        scrollView?.subviews.forEach{
+        scrollView?.subviews.forEach {
             $0.transform = CGAffineTransform(translationX: 0, y: self.scrollOffset)
         }
 
     }
     
-    deinit {
-        self.observer = nil
-    }
 }
+
+extension ScrollUpdater: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollViewDidScroll()
+    }
+    
+}
+
+
+
+
+

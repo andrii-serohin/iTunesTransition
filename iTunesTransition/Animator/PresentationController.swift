@@ -38,10 +38,8 @@ class PresentationController: UIPresentationController {
         guard let containerView = containerView, let window = containerView.window else { return }
         
         guard let coordinator = presentedViewController.transitionCoordinator else { return }
-        guard let presentingController = presentingViewController as? PlayerTabBarViewController else { return }
-        guard let contentView = presentingController.selectedViewController?.view else { return }
         
-        contentView.addSubview(dimming)
+        containerView.addSubview(dimming)
         dimming.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([dimming.leftAnchor.constraint(equalTo: window.leftAnchor),
                                      dimming.topAnchor.constraint(equalTo: window.topAnchor),
@@ -51,6 +49,7 @@ class PresentationController: UIPresentationController {
         coordinator.animate(alongsideTransition: { (context) in
             self.dimming.alpha = 0.5
         })
+        
     }
     
 }
@@ -80,7 +79,6 @@ extension PresentationController: UIViewControllerAnimatedTransitioning {
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        
         guard let presented = presentedView else { return }
         guard let container = containerView else { return }
       
@@ -99,18 +97,17 @@ extension PresentationController: UIViewControllerAnimatedTransitioning {
                             
                 contentView.layer.cornerRadius = 0
                 contentView.transform = .identity
-                contentView.frame = container.frame
-                            
+                contentView.frame = self.frameOfPresentedViewInContainerView
+                
                 presentingController.player.isHidden = true
                 self.snapshotConstarint?.constant = 0
-                presented.transform = .identity
-                self.presentedControllerTopConstarint?.constant = presentingController.player.frame.origin.y
+                self.presentedControllerTopConstarint?.constant = presentingController.player.frame.origin.y - presentedController.view.transform.ty
                 self.presentedControllerHeightConstarint?.constant = Constants.playerHeight
                 presentedController.shrinkContent()
                 container.layoutIfNeeded()
                 
-                
                 presented.layer.cornerRadius = 0
+                
                             
             }, completion: { isCompleted in
                 if !transitionContext.transitionWasCancelled {
@@ -123,7 +120,7 @@ extension PresentationController: UIViewControllerAnimatedTransitioning {
             
             return
         }
-        
+
         container.addSubview(presented)
         presented.translatesAutoresizingMaskIntoConstraints = false
         presented.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
@@ -136,7 +133,7 @@ extension PresentationController: UIViewControllerAnimatedTransitioning {
         presentedControllerTopConstarint?.isActive = true
         presentedControllerHeightConstarint?.isActive = true
         
-        let separator = presentingController.tabBar.subviews.first?.subviews.first(where: { $0 is UIImageView })?.snapshotView(afterScreenUpdates: true)
+        let separator = presentingController.tabBar.subviews.first?.subviews.first(where: { $0 is UIImageView })?.snapshotView(afterScreenUpdates: false)
         tabBarSnapshot = presentingController.tabBar.snapshotView(afterScreenUpdates: true)
         
         if let separator = separator, let tabBarSnapshot = tabBarSnapshot {
@@ -168,15 +165,17 @@ extension PresentationController: UIViewControllerAnimatedTransitioning {
             contentView.clipsToBounds = true
             
             let translatY = 20 - container.bounds.height * 0.05 / 2
-            contentView.transform = contentView.transform.scaledBy(x: self.scaleFactor, y: self.scaleFactor)
-                                                         .translatedBy(x: 0, y: translatY)
-
+            
+            contentView.transform = contentView.transform.scaledBy(x: self.scaleFactor,
+                                                                   y: self.scaleFactor)
+                                                         .translatedBy(x: 0,
+                                                                       y: translatY)
+                        
             self.snapshotConstarint?.constant = self.tabBarSnapshot!.bounds.height
                         
             presentedController.expandContent()
             self.presentedControllerHeightConstarint?.constant = container.bounds.height - Constants.musicDetailsTopPadding
             self.presentedControllerTopConstarint?.constant = Constants.musicDetailsTopPadding
-                        
             container.layoutIfNeeded()
             presented.layer.cornerRadius = 10
             presented.clipsToBounds = true

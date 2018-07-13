@@ -22,7 +22,9 @@ class PlayerView: UIView {
     }()
     
     init() {
-        super.init(frame: CGRect(x: 0, y: 0, width: 90, height: 90))
+        super.init(frame: CGRect(origin: .zero,
+                                 size: CGSize(width: 90,
+                                              height: 90)))
         backgroundColor = .white
         addSubview(imageView)
         

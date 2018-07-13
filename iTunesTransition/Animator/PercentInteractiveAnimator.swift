@@ -39,7 +39,9 @@ class PercentInteractiveAnimator: UIPercentDrivenInteractiveTransition {
         
         let transition = gesture.translation(in: view)
         let delta = UIScreen.main.bounds.height - Constants.playerHeight - Constants.statusBarHeight
+        
         let progress = -transition.y / delta
+        completionSpeed = 0.5
         
         switch gesture.state {
         case .began:
