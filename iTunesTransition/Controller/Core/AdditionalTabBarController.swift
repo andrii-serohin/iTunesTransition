@@ -94,7 +94,7 @@ extension AdditionalTabBarController: PercentInteractiveDelegate {
 extension AdditionalTabBarController: FlexibleViewControllerDelegate {
     
     var dismissThreshold: CGFloat {
-        return view.frame.origin.y
+        return additionalView.frame.origin.y
     }
     
     func flexibleViewController(_ viewController: FlexibleViewController, updateProgress current: CGFloat) {

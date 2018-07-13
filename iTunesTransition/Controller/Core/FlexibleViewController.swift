@@ -75,7 +75,7 @@ class FlexibleViewController: UIViewController {
 @objc extension FlexibleViewController {
     
     private func handlePan(gesture: UIPanGestureRecognizer) {
-        
+
         guard gesture.isEqual(panRecognizer), isAllowDismisSwipe else { return }
         
         guard !isBeingDismissed else {
