@@ -1,5 +1,5 @@
 //
-//  AdditionalTabBarController.swift
+//  AdditionalViewTabBarController.swift
 //  iTunesTransition
 //
 //  Created by Andrew Seregin on 13.07.2018.
@@ -10,7 +10,7 @@ import Foundation
 
 import UIKit
 
-class AdditionalTabBarController: UITabBarController {
+class AdditionalViewTabBarController: UITabBarController {
     
     private let _additionalView = UIView()
     
@@ -36,7 +36,8 @@ class AdditionalTabBarController: UITabBarController {
     }
 
     private func prepareAdditionalView() {
-        view.insertSubview(additionalView, aboveSubview: tabBar)
+        
+        view.insertSubview(additionalView, belowSubview: tabBar)
         additionalView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([additionalView.leftAnchor.constraint(equalTo: view.leftAnchor),
@@ -57,7 +58,7 @@ class AdditionalTabBarController: UITabBarController {
     }
     
     var flexibleViewController: FlexibleViewController {
-        return TrackDetailsViewController()
+        return FlexibleViewController()
     }
     
     private var preparedFlexibleViewController: FlexibleViewController {
@@ -75,7 +76,7 @@ class AdditionalTabBarController: UITabBarController {
     
 }
 
-@objc extension AdditionalTabBarController {
+@objc extension AdditionalViewTabBarController {
     
     private func handleTap() {
         presentFlexibleViewController()
@@ -83,7 +84,7 @@ class AdditionalTabBarController: UITabBarController {
     
 }
 
-extension AdditionalTabBarController: PercentInteractiveDelegate {
+extension AdditionalViewTabBarController: PercentInteractiveDelegate {
     
     func percentAnimatorWantInteract(_ animator: PercentInteractiveAnimator) {
         presentFlexibleViewController()
@@ -91,7 +92,7 @@ extension AdditionalTabBarController: PercentInteractiveDelegate {
     
 }
 
-extension AdditionalTabBarController: FlexibleViewControllerDelegate {
+extension AdditionalViewTabBarController: FlexibleViewControllerDelegate {
     
     var dismissThreshold: CGFloat {
         return additionalView.frame.origin.y
@@ -107,7 +108,7 @@ extension AdditionalTabBarController: FlexibleViewControllerDelegate {
 
 }
 
-extension AdditionalTabBarController: UIViewControllerTransitioningDelegate {
+extension AdditionalViewTabBarController: UIViewControllerTransitioningDelegate {
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         animator?.isPresenting = true

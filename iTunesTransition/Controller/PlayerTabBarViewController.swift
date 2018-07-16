@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PlayerTabBarViewController: AdditionalTabBarController {
+class PlayerTabBarViewController: AdditionalViewTabBarController {
     
     var player = PlayerView()
     
@@ -19,7 +19,10 @@ class PlayerTabBarViewController: AdditionalTabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
+    
+    override var flexibleViewController: FlexibleViewController {
+        return TrackDetailsViewController()
+    }
 }
 
 

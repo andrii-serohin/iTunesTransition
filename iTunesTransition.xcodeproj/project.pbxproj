@@ -21,7 +21,7 @@
 		B152B85920DE453100B9252A /* BounceResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B152B85820DE453100B9252A /* BounceResolver.swift */; };
 		B154BE6720F8D73000B6FCF3 /* FlexibleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B154BE6620F8D73000B6FCF3 /* FlexibleViewController.swift */; };
 		B154BE6920F8E07C00B6FCF3 /* UITabBar+Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B154BE6820F8E07C00B6FCF3 /* UITabBar+Snapshot.swift */; };
-		B154BE6B20F8E66D00B6FCF3 /* AdditionalTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B154BE6A20F8E66D00B6FCF3 /* AdditionalTabBarController.swift */; };
+		B154BE6B20F8E66D00B6FCF3 /* AdditionalViewTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B154BE6A20F8E66D00B6FCF3 /* AdditionalViewTabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,7 +52,7 @@
 		B152B85820DE453100B9252A /* BounceResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BounceResolver.swift; sourceTree = "<group>"; };
 		B154BE6620F8D73000B6FCF3 /* FlexibleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleViewController.swift; sourceTree = "<group>"; };
 		B154BE6820F8E07C00B6FCF3 /* UITabBar+Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITabBar+Snapshot.swift"; sourceTree = "<group>"; };
-		B154BE6A20F8E66D00B6FCF3 /* AdditionalTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalTabBarController.swift; sourceTree = "<group>"; };
+		B154BE6A20F8E66D00B6FCF3 /* AdditionalViewTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalViewTabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,7 +155,7 @@
 		B154BE6C20F8EEF800B6FCF3 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				B154BE6A20F8E66D00B6FCF3 /* AdditionalTabBarController.swift */,
+				B154BE6A20F8E66D00B6FCF3 /* AdditionalViewTabBarController.swift */,
 				B154BE6620F8D73000B6FCF3 /* FlexibleViewController.swift */,
 			);
 			path = Core;
@@ -272,7 +272,7 @@
 				4CFB10CE204F963A0053C27C /* PercentInteractiveAnimator.swift in Sources */,
 				76774FF7204D84AB008B6F3D /* TrackDetailsViewController.swift in Sources */,
 				76774FF9204D96FB008B6F3D /* PresentationController.swift in Sources */,
-				B154BE6B20F8E66D00B6FCF3 /* AdditionalTabBarController.swift in Sources */,
+				B154BE6B20F8E66D00B6FCF3 /* AdditionalViewTabBarController.swift in Sources */,
 				B154BE6720F8D73000B6FCF3 /* FlexibleViewController.swift in Sources */,
 				4CFB10CA204F7A0F0053C27C /* Constants.swift in Sources */,
 				B152B85520DE3E1B00B9252A /* UIView+ScrollViewDetection.swift in Sources */,

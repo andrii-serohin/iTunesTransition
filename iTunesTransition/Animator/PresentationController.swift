@@ -13,10 +13,10 @@ class PresentationController: UIPresentationController {
     var isPresenting = false
     
     var tabBarSnapshot: UIView?
-    private var snapshotConstarint: NSLayoutConstraint?
+    private var snapshotConstraint: NSLayoutConstraint?
     
-    private var presentedControllerHeightConstarint: NSLayoutConstraint?
-    private var presentedControllerTopConstarint: NSLayoutConstraint?
+    private var presentedControllerHeightConstraint: NSLayoutConstraint?
+    private var presentedControllerTopConstraint: NSLayoutConstraint?
     
     var duration: TimeInterval = 0.6
     
@@ -101,9 +101,9 @@ extension PresentationController: UIViewControllerAnimatedTransitioning {
                 contentView.frame = self.frameOfPresentedViewInContainerView
                 
                 presentingController.player.isHidden = true
-                self.snapshotConstarint?.constant = 0
-                self.presentedControllerTopConstarint?.constant = presentingController.player.frame.origin.y - presentedController.view.transform.ty
-                self.presentedControllerHeightConstarint?.constant = Constants.playerHeight
+                self.snapshotConstraint?.constant = 0
+                self.presentedControllerTopConstraint?.constant = presentingController.player.frame.origin.y - presentedController.view.transform.ty
+                self.presentedControllerHeightConstraint?.constant = Constants.playerHeight
                 presentedController.onShrink()
                 container.layoutIfNeeded()
                 
@@ -128,11 +128,11 @@ extension PresentationController: UIViewControllerAnimatedTransitioning {
         presented.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
         
         let deltaY = container.bounds.height - presentingController.tabBar.bounds.height - presentingController.player.bounds.height
-        presentedControllerTopConstarint = presented.topAnchor.constraint(equalTo: container.topAnchor,
+        presentedControllerTopConstraint = presented.topAnchor.constraint(equalTo: container.topAnchor,
                                                                           constant: deltaY)
-        presentedControllerHeightConstarint = presented.heightAnchor.constraint(equalToConstant: Constants.playerHeight)
-        presentedControllerTopConstarint?.isActive = true
-        presentedControllerHeightConstarint?.isActive = true
+        presentedControllerHeightConstraint = presented.heightAnchor.constraint(equalToConstant: Constants.playerHeight)
+        presentedControllerTopConstraint?.isActive = true
+        presentedControllerHeightConstraint?.isActive = true
         
         tabBarSnapshot = presentingController.tabBar.snapshot
         tabBarSnapshot.flatMap {
@@ -144,8 +144,8 @@ extension PresentationController: UIViewControllerAnimatedTransitioning {
         NSLayoutConstraint.activate([tabBarSnapshot?.leftAnchor.constraint(equalTo: container.leftAnchor),
                                      tabBarSnapshot?.rightAnchor.constraint(equalTo: container.rightAnchor),
                                      tabBarSnapshot?.heightAnchor.constraint(equalTo: presentingController.tabBar.heightAnchor)].compactMap{ $0 })
-        snapshotConstarint = tabBarSnapshot?.bottomAnchor.constraint(equalTo: presentingController.tabBar.bottomAnchor)
-        snapshotConstarint?.isActive = true
+        snapshotConstraint = tabBarSnapshot?.bottomAnchor.constraint(equalTo: presentingController.tabBar.bottomAnchor)
+        snapshotConstraint?.isActive = true
         container.layoutIfNeeded()
         
         UIView.animate(withDuration: duration,
@@ -165,11 +165,11 @@ extension PresentationController: UIViewControllerAnimatedTransitioning {
                                                          .translatedBy(x: 0,
                                                                        y: translatY)
                         
-            self.snapshotConstarint?.constant = self.tabBarSnapshot!.bounds.height
+            self.snapshotConstraint?.constant = self.tabBarSnapshot!.bounds.height
                         
             presentedController.onExpand()
-            self.presentedControllerHeightConstarint?.constant = container.bounds.height - Constants.musicDetailsTopPadding
-            self.presentedControllerTopConstarint?.constant = Constants.musicDetailsTopPadding
+            self.presentedControllerHeightConstraint?.constant = container.bounds.height - Constants.musicDetailsTopPadding
+            self.presentedControllerTopConstraint?.constant = Constants.musicDetailsTopPadding
             container.layoutIfNeeded()
             presented.layer.cornerRadius = 10
             presented.clipsToBounds = true
