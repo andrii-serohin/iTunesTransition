@@ -18,14 +18,8 @@ class AdditionalViewTabBarController: UITabBarController {
         return _additionalView
     }
     
-    var animator: PresentationController?
-    var interactiveAnimator: PercentInteractiveAnimator?
-    
-    private var scaleFactor: CGFloat {
-        guard let container = view else { return 0 }
-        let persent = Constants.statusBarHeight * 1.5 / container.bounds.height
-        return 1 - persent
-    }
+    var moveOutAnimator: MoveOutPresentationController?
+    var moveOutInteractiveAnimator: MoveOutPercentInteractiveAnimator?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,8 +28,31 @@ class AdditionalViewTabBarController: UITabBarController {
         prepareGestureRecognizer()
         prepareInteractiveAnimator()
     }
+    
+    func prepareInteractiveAnimator() {
+        moveOutInteractiveAnimator = MoveOutPercentInteractiveAnimator(source: additionalView)
+        moveOutInteractiveAnimator?.delegate = self
+    }
+    
+    var flexibleViewController: FlexibleViewController {
+        return FlexibleViewController()
+    }
+    
+    final func presentFlexibleViewController() {
+        present(preparedFlexibleViewController, animated: true)
+    }
+    
+}
 
-    private func prepareAdditionalView() {
+private extension AdditionalViewTabBarController {
+    
+    var scaleFactor: CGFloat {
+        guard let container = view else { return 0 }
+        let persent = UIApplication.shared.statusBarFrame.height * 1.5 / container.bounds.height
+        return 1 - persent
+    }
+    
+    func prepareAdditionalView() {
         
         view.insertSubview(additionalView, belowSubview: tabBar)
         additionalView.translatesAutoresizingMaskIntoConstraints = false
@@ -44,34 +61,21 @@ class AdditionalViewTabBarController: UITabBarController {
                                      additionalView.rightAnchor.constraint(equalTo: view.rightAnchor),
                                      additionalView.bottomAnchor.constraint(equalTo: tabBar.topAnchor),
                                      //TODO: Change to more clever algorithm
-            additionalView.heightAnchor.constraint(equalToConstant: Constants.playerHeight - tabBar.bounds.height)])
+                                     additionalView.heightAnchor.constraint(equalToConstant: Constants.playerHeight - tabBar.bounds.height)])
     }
     
-    private func prepareGestureRecognizer() {
+    func prepareGestureRecognizer() {
         additionalView.addGestureRecognizer(UITapGestureRecognizer(target: self,
                                                                    action: #selector(handleTap)))
     }
     
-    func prepareInteractiveAnimator() {
-        interactiveAnimator = PercentInteractiveAnimator(source: additionalView)
-        interactiveAnimator?.delegate = self
-    }
-    
-    var flexibleViewController: FlexibleViewController {
-        return FlexibleViewController()
-    }
-    
-    private var preparedFlexibleViewController: FlexibleViewController {
+    var preparedFlexibleViewController: FlexibleViewController {
         let controller = flexibleViewController
         controller.transitioningDelegate = self
         controller.modalPresentationStyle = .custom
         controller.modalPresentationCapturesStatusBarAppearance = true
         controller.delegate = self
         return controller
-    }
-    
-    final func presentFlexibleViewController() {
-        present(preparedFlexibleViewController, animated: true)
     }
     
 }
@@ -84,9 +88,10 @@ class AdditionalViewTabBarController: UITabBarController {
     
 }
 
-extension AdditionalViewTabBarController: PercentInteractiveDelegate {
+
+extension AdditionalViewTabBarController: MoveOutPercentInteractiveAnimatorDelegate {
     
-    func percentAnimatorWantInteract(_ animator: PercentInteractiveAnimator) {
+    func moveOutPercentAnimatorWillInteract(_ animator: MoveOutPercentInteractiveAnimator) {
         presentFlexibleViewController()
     }
     
@@ -100,7 +105,7 @@ extension AdditionalViewTabBarController: FlexibleViewControllerDelegate {
     
     func flexibleViewController(_ viewController: FlexibleViewController, updateProgress current: CGFloat) {
         guard let selectedView = selectedViewController?.view else { return }
-        let persent = Constants.statusBarHeight * 1.5 / view.bounds.height
+        let persent = UIApplication.shared.statusBarFrame.height * 1.5 / view.bounds.height
         let scale = scaleFactor + persent * current
         selectedView.transform = CGAffineTransform.identity.scaledBy(x: scale,
                                                                      y: scale)
@@ -111,23 +116,23 @@ extension AdditionalViewTabBarController: FlexibleViewControllerDelegate {
 extension AdditionalViewTabBarController: UIViewControllerTransitioningDelegate {
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        animator?.isPresenting = true
-        return animator
+        moveOutAnimator?.isPresenting = true
+        return moveOutAnimator
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        animator?.isPresenting = false
-        return animator
+        moveOutAnimator?.isPresenting = false
+        return moveOutAnimator
     }
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        animator = PresentationController(presentedViewController: presented,
-                                          presenting: presenting)
-        return animator
+        moveOutAnimator = MoveOutPresentationController(presentedViewController: presented,
+                                                        presenting: presenting)
+        return moveOutAnimator
     }
     
     func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return interactiveAnimator
+        return moveOutInteractiveAnimator
     }
     
 }
