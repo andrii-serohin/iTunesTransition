@@ -18,8 +18,8 @@ class AdditionalViewTabBarController: UITabBarController {
         return _additionalView
     }
     
-    var moveOutAnimator: MoveOutPresentationController?
-    var moveOutInteractiveAnimator: MoveOutPercentInteractiveAnimator?
+    var moveOutAnimator: AppleMusicPresentationController?
+    var moveOutInteractiveAnimator: AppleMusicPercentDrivenInteractiveAnimator?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +30,7 @@ class AdditionalViewTabBarController: UITabBarController {
     }
     
     func prepareInteractiveAnimator() {
-        moveOutInteractiveAnimator = MoveOutPercentInteractiveAnimator(source: additionalView)
+        moveOutInteractiveAnimator = AppleMusicPercentDrivenInteractiveAnimator(source: additionalView)
         moveOutInteractiveAnimator?.delegate = self
     }
     
@@ -89,9 +89,9 @@ private extension AdditionalViewTabBarController {
 }
 
 
-extension AdditionalViewTabBarController: MoveOutPercentInteractiveAnimatorDelegate {
+extension AdditionalViewTabBarController: AppleMusicPercentInteractiveAnimatorDelegate {
     
-    func moveOutPercentAnimatorWillInteract(_ animator: MoveOutPercentInteractiveAnimator) {
+    func appleMusicPercentAnimatorWillInteract(_ animator: AppleMusicPercentDrivenInteractiveAnimator) {
         presentFlexibleViewController()
     }
     
@@ -126,7 +126,7 @@ extension AdditionalViewTabBarController: UIViewControllerTransitioningDelegate 
     }
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        moveOutAnimator = MoveOutPresentationController(presentedViewController: presented,
+        moveOutAnimator = AppleMusicPresentationController(presentedViewController: presented,
                                                         presenting: presenting)
         return moveOutAnimator
     }

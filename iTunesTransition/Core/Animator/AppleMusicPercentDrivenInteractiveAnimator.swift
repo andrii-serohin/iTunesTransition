@@ -9,18 +9,18 @@
 import Foundation
 import UIKit
 
-protocol MoveOutPercentInteractiveAnimatorDelegate : class {
-    func moveOutPercentAnimatorWillInteract(_ animator: MoveOutPercentInteractiveAnimator)
+protocol AppleMusicPercentInteractiveAnimatorDelegate : class {
+    func appleMusicPercentAnimatorWillInteract(_ animator: AppleMusicPercentDrivenInteractiveAnimator)
 }
 
-class MoveOutPercentInteractiveAnimator: UIPercentDrivenInteractiveTransition {
+class AppleMusicPercentDrivenInteractiveAnimator: UIPercentDrivenInteractiveTransition {
     
     private var view: UIView
     private var isNeedComplete = false
     
     private(set) var panGesture: UIPanGestureRecognizer?
     
-    weak var delegate: MoveOutPercentInteractiveAnimatorDelegate?
+    weak var delegate: AppleMusicPercentInteractiveAnimatorDelegate?
     
     init(source view: UIView) {
         self.view = view
@@ -32,7 +32,7 @@ class MoveOutPercentInteractiveAnimator: UIPercentDrivenInteractiveTransition {
     
 }
 
-private extension MoveOutPercentInteractiveAnimator {
+private extension AppleMusicPercentDrivenInteractiveAnimator {
     
     func prepareGestureRecognizer() {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(gesture:)))
@@ -42,7 +42,7 @@ private extension MoveOutPercentInteractiveAnimator {
     
 }
 
-@objc extension MoveOutPercentInteractiveAnimator {
+@objc extension AppleMusicPercentDrivenInteractiveAnimator {
     
     private func handlePanGesture(gesture: UIPanGestureRecognizer) {
         
@@ -54,7 +54,7 @@ private extension MoveOutPercentInteractiveAnimator {
         
         switch gesture.state {
         case .began:
-            delegate?.moveOutPercentAnimatorWillInteract(self)
+            delegate?.appleMusicPercentAnimatorWillInteract(self)
         case .changed:
             isNeedComplete = progress > Constants.Animation.Progress.completeValue
             update(progress)

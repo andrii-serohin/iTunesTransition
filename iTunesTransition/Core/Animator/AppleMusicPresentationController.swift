@@ -1,5 +1,5 @@
 //
-//  MoveOutPresentationController.swift
+//  AppleMusicPresentationController.swift
 //  iTunesTransition
 //
 //  Created by Andrew Seregin on 21.06.2018.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MoveOutPresentationController: UIPresentationController {
+class AppleMusicPresentationController: UIPresentationController {
     
     var isPresenting = false
     
@@ -66,7 +66,7 @@ class MoveOutPresentationController: UIPresentationController {
     
 }
 
-extension MoveOutPresentationController: UIViewControllerAnimatedTransitioning {
+extension AppleMusicPresentationController: UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return Constants.Animation.duration
@@ -92,7 +92,7 @@ extension MoveOutPresentationController: UIViewControllerAnimatedTransitioning {
     }
 }
 
-private extension MoveOutPresentationController {
+private extension AppleMusicPresentationController {
     
     func animateShrinkTransition(using transitionContext: UIViewControllerContextTransitioning,
                                          for flexibleViewController: FlexibleViewController,
