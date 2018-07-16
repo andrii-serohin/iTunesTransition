@@ -19,7 +19,7 @@ class AppleMusicPresentationController: UIPresentationController {
     private var presentedControllerTopConstraint: NSLayoutConstraint?
 
     private var scaleFactor: CGFloat {
-        guard let container = containerView else { return 0 }
+        guard let container = containerView, container.bounds.height != 0 else { return 0 }
         let persent = UIApplication.shared.statusBarFrame.height * 1.5 / container.bounds.height
         return 1 - persent
     }
@@ -75,17 +75,17 @@ extension AppleMusicPresentationController: UIViewControllerAnimatedTransitionin
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
 
         guard let flexibleViewController = presentedViewController as? FlexibleViewController else { return }
-        guard let additionalViewTabBarController = presentingViewController as? AdditionalViewTabBarController else { return }
+        guard let appleMusicTabBarController = presentingViewController as? AppleMusicTabBarController else { return }
         
         guard isPresenting else {
             return animateShrinkTransition(using: transitionContext,
                                            for: flexibleViewController,
-                                           on: additionalViewTabBarController)
+                                           on: appleMusicTabBarController)
         }
         
         animateExpandTransition(using: transitionContext,
                                 for: flexibleViewController,
-                                on: additionalViewTabBarController)
+                                on: appleMusicTabBarController)
         
 
         
@@ -96,7 +96,8 @@ private extension AppleMusicPresentationController {
     
     func animateShrinkTransition(using transitionContext: UIViewControllerContextTransitioning,
                                          for flexibleViewController: FlexibleViewController,
-                                         on additionalViewTabBarController: AdditionalViewTabBarController) {
+                                         
+                                         on appleMusicTabBarController: AppleMusicTabBarController) {
         
         UIView.animate(withDuration: Constants.Animation.duration,
                        delay: 0,
@@ -105,23 +106,23 @@ private extension AppleMusicPresentationController {
                        options: .curveEaseInOut,
                        animations: {
                         
-                        additionalViewTabBarController.view.layer.cornerRadius = 0
-                        additionalViewTabBarController.view.transform = .identity
-                        additionalViewTabBarController.selectedViewController?.view.frame = self.frameOfPresentedViewInContainerView
+                        appleMusicTabBarController.view.layer.cornerRadius = 0
+                        appleMusicTabBarController.view.transform = .identity
+                        appleMusicTabBarController.selectedViewController?.view.frame = self.frameOfPresentedViewInContainerView
                         
                         flexibleViewController.onShrink()
                         self.presentedView?.layer.cornerRadius = 0
                         self.snapshotConstraint?.constant = 0
                         self.presentedControllerHeightConstraint?.constant = Constants.playerHeight
-                        self.presentedControllerTopConstraint?.constant = additionalViewTabBarController.additionalView.frame.origin.y - flexibleViewController.view.transform.ty
-                        additionalViewTabBarController.additionalView.isHidden = true
+                        self.presentedControllerTopConstraint?.constant = appleMusicTabBarController.additionalView.frame.origin.y - flexibleViewController.view.transform.ty
+                        appleMusicTabBarController.additionalView.isHidden = true
                         self.containerView?.layoutIfNeeded()
                         
         }, completion: { isCompleted in
             if !transitionContext.transitionWasCancelled {
                 self.tabBarSnapshot?.removeFromSuperview()
                 self.tabBarSnapshot = nil
-                additionalViewTabBarController.additionalView.isHidden = false
+                appleMusicTabBarController.additionalView.isHidden = false
             }
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         })
@@ -130,7 +131,7 @@ private extension AppleMusicPresentationController {
     
     func animateExpandTransition(using transitionContext: UIViewControllerContextTransitioning,
                                          for flexibleViewController: FlexibleViewController,
-                                         on additionalViewTabBarController: AdditionalViewTabBarController) {
+                                         on appleMusicTabBarController: AppleMusicTabBarController) {
         
         guard let presentedView = presentedView else { return }
         guard let containerView = containerView else { return }
@@ -138,7 +139,7 @@ private extension AppleMusicPresentationController {
         containerView.addSubview(presentedView)
         presentedView.translatesAutoresizingMaskIntoConstraints = false
         
-        let deltaY = containerView.bounds.height - additionalViewTabBarController.tabBar.bounds.height - additionalViewTabBarController.additionalView.bounds.height
+        let deltaY = containerView.bounds.height - appleMusicTabBarController.tabBar.bounds.height - appleMusicTabBarController.additionalView.bounds.height
         presentedControllerTopConstraint = presentedView.topAnchor.constraint(equalTo: containerView.topAnchor,
                                                                               constant: deltaY)
         presentedControllerHeightConstraint = presentedView.heightAnchor.constraint(equalToConstant: Constants.playerHeight)
@@ -149,17 +150,17 @@ private extension AppleMusicPresentationController {
                                      presentedControllerHeightConstraint].compactMap{ $0 })
         
         
-        tabBarSnapshot = additionalViewTabBarController.tabBar.snapshot
+        tabBarSnapshot = appleMusicTabBarController.tabBar.snapshot
         tabBarSnapshot.flatMap {
             containerView.addSubview($0)
         }
         
         tabBarSnapshot?.translatesAutoresizingMaskIntoConstraints = false
         
-        snapshotConstraint = tabBarSnapshot?.bottomAnchor.constraint(equalTo: additionalViewTabBarController.tabBar.bottomAnchor)
+        snapshotConstraint = tabBarSnapshot?.bottomAnchor.constraint(equalTo: appleMusicTabBarController.tabBar.bottomAnchor)
         NSLayoutConstraint.activate([tabBarSnapshot?.leftAnchor.constraint(equalTo: containerView.leftAnchor),
                                      tabBarSnapshot?.rightAnchor.constraint(equalTo: containerView.rightAnchor),
-                                     tabBarSnapshot?.heightAnchor.constraint(equalTo: additionalViewTabBarController.tabBar.heightAnchor),
+                                     tabBarSnapshot?.heightAnchor.constraint(equalTo: appleMusicTabBarController.tabBar.heightAnchor),
                                      snapshotConstraint].compactMap{ $0 })
         
         containerView.layoutIfNeeded()
@@ -171,12 +172,12 @@ private extension AppleMusicPresentationController {
                        options: .curveEaseInOut,
                        animations: {
                         
-                        additionalViewTabBarController.selectedViewController?.view.layer.cornerRadius = 10
-                        additionalViewTabBarController.selectedViewController?.view.clipsToBounds = true
+                        appleMusicTabBarController.selectedViewController?.view.layer.cornerRadius = 10
+                        appleMusicTabBarController.selectedViewController?.view.clipsToBounds = true
                         
                         let translatY = 20 - containerView.bounds.height * 0.05 / 2
-                        let transform = additionalViewTabBarController.selectedViewController?.view.transform ?? .identity
-                        additionalViewTabBarController.selectedViewController?.view.transform = transform.scaledBy(x: self.scaleFactor,
+                        let transform = appleMusicTabBarController.selectedViewController?.view.transform ?? .identity
+                        appleMusicTabBarController.selectedViewController?.view.transform = transform.scaledBy(x: self.scaleFactor,
                                                                                                                    y: self.scaleFactor).translatedBy(x: 0,
                                                                                                                                                      y: translatY)
                         

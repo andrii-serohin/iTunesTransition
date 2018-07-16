@@ -1,16 +1,14 @@
 //
-//  AdditionalViewTabBarController.swift
+//  AppleMusicTabBarController.swift
 //  iTunesTransition
 //
 //  Created by Andrew Seregin on 13.07.2018.
 //  Copyright © 2018 cookie. All rights reserved.
 //
 
-import Foundation
-
 import UIKit
 
-class AdditionalViewTabBarController: UITabBarController {
+class AppleMusicTabBarController: UITabBarController {
     
     private let _additionalView = UIView()
     
@@ -18,8 +16,8 @@ class AdditionalViewTabBarController: UITabBarController {
         return _additionalView
     }
     
-    var moveOutAnimator: AppleMusicPresentationController?
-    var moveOutInteractiveAnimator: AppleMusicPercentDrivenInteractiveAnimator?
+    var appleMusicPresentationController: AppleMusicPresentationController?
+    var appleMusicInteractiveAnimator: AppleMusicPercentDrivenInteractiveAnimator?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +28,8 @@ class AdditionalViewTabBarController: UITabBarController {
     }
     
     func prepareInteractiveAnimator() {
-        moveOutInteractiveAnimator = AppleMusicPercentDrivenInteractiveAnimator(source: additionalView)
-        moveOutInteractiveAnimator?.delegate = self
+        appleMusicInteractiveAnimator = AppleMusicPercentDrivenInteractiveAnimator(source: additionalView)
+        appleMusicInteractiveAnimator?.delegate = self
     }
     
     var flexibleViewController: FlexibleViewController {
@@ -44,7 +42,7 @@ class AdditionalViewTabBarController: UITabBarController {
     
 }
 
-private extension AdditionalViewTabBarController {
+private extension AppleMusicTabBarController {
     
     var scaleFactor: CGFloat {
         guard let container = view else { return 0 }
@@ -80,7 +78,7 @@ private extension AdditionalViewTabBarController {
     
 }
 
-@objc extension AdditionalViewTabBarController {
+@objc extension AppleMusicTabBarController {
     
     private func handleTap() {
         presentFlexibleViewController()
@@ -89,7 +87,7 @@ private extension AdditionalViewTabBarController {
 }
 
 
-extension AdditionalViewTabBarController: AppleMusicPercentInteractiveAnimatorDelegate {
+extension AppleMusicTabBarController: AppleMusicPercentInteractiveAnimatorDelegate {
     
     func appleMusicPercentAnimatorWillInteract(_ animator: AppleMusicPercentDrivenInteractiveAnimator) {
         presentFlexibleViewController()
@@ -97,9 +95,9 @@ extension AdditionalViewTabBarController: AppleMusicPercentInteractiveAnimatorDe
     
 }
 
-extension AdditionalViewTabBarController: FlexibleViewControllerDelegate {
+extension AppleMusicTabBarController: FlexibleViewControllerDelegate {
     
-    var dismissThreshold: CGFloat {
+    func dismissThreshold(for flexibleViewController: FlexibleViewController) -> CGFloat {
         return additionalView.frame.origin.y
     }
     
@@ -113,26 +111,26 @@ extension AdditionalViewTabBarController: FlexibleViewControllerDelegate {
 
 }
 
-extension AdditionalViewTabBarController: UIViewControllerTransitioningDelegate {
+extension AppleMusicTabBarController: UIViewControllerTransitioningDelegate {
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        moveOutAnimator?.isPresenting = true
-        return moveOutAnimator
+        appleMusicPresentationController?.isPresenting = true
+        return appleMusicPresentationController
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        moveOutAnimator?.isPresenting = false
-        return moveOutAnimator
+        appleMusicPresentationController?.isPresenting = false
+        return appleMusicPresentationController
     }
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        moveOutAnimator = AppleMusicPresentationController(presentedViewController: presented,
+        appleMusicPresentationController = AppleMusicPresentationController(presentedViewController: presented,
                                                         presenting: presenting)
-        return moveOutAnimator
+        return appleMusicPresentationController
     }
     
     func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return moveOutInteractiveAnimator
+        return appleMusicInteractiveAnimator
     }
     
 }

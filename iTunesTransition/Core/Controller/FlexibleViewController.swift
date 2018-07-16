@@ -9,7 +9,7 @@
 import UIKit
 
 protocol FlexibleViewControllerDelegate: class {
-    var dismissThreshold: CGFloat { get }
+    func dismissThreshold(for flexibleViewController: FlexibleViewController) -> CGFloat
     func flexibleViewController(_ viewController: FlexibleViewController, updateProgress current: CGFloat)
 }
 
@@ -20,8 +20,7 @@ class FlexibleViewController: UIViewController {
     
     weak var delegate: FlexibleViewControllerDelegate?
     
-    //TODO: Change name to more descriptive
-    var isAllowDismisSwipe: Bool {
+    var allowsDismissSwipe: Bool {
         return bouncesResolver?.isDismissEnabled ?? true
     }
     
@@ -33,15 +32,14 @@ class FlexibleViewController: UIViewController {
     private func prepareGestureRecognizers() {
         let panRecognizer = UIPanGestureRecognizer(target: self,
                                                    action: #selector(handlePan(gesture:)))
+        panRecognizer.delegate = self
         view.addGestureRecognizer(panRecognizer)
         self.panRecognizer = panRecognizer
-        self.panRecognizer?.delegate = self
-        
     }
     
-    private func deformFlexibleController(according translation: CGFloat, currentProgress: CGFloat) {
+    private func transform(according translation: CGFloat, currentProgress: CGFloat) {
         
-        let threshold = delegate?.dismissThreshold ?? 350
+        let threshold = delegate?.dismissThreshold(for: self) ?? 350
         
         guard translation >= 0 else { return }
         delegate?.flexibleViewController(self, updateProgress: currentProgress)
@@ -76,7 +74,7 @@ class FlexibleViewController: UIViewController {
     
     private func handlePan(gesture: UIPanGestureRecognizer) {
 
-        guard gesture.isEqual(panRecognizer), isAllowDismisSwipe else { return }
+        guard gesture.isEqual(panRecognizer), allowsDismissSwipe else { return }
         
         guard !isBeingDismissed else {
             gesture.isEnabled = false
@@ -96,12 +94,12 @@ class FlexibleViewController: UIViewController {
             
         case .changed:
             
-            guard isAllowDismisSwipe else { return }
-            deformFlexibleController(according: translation.y, currentProgress: progress)
+            guard allowsDismissSwipe else { return }
+            transform(according: translation.y, currentProgress: progress)
             
         case .ended:
             
-            guard isAllowDismisSwipe else { return }
+            guard allowsDismissSwipe else { return }
             
             guard progress > 0.2 else {
                 
@@ -131,7 +129,7 @@ extension FlexibleViewController: UIGestureRecognizerDelegate {
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                            shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return gestureRecognizer.isEqual(panRecognizer)
+        return gestureRecognizer === panRecognizer
     }
     
 }

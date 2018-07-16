@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PlayerTabBarViewController: AdditionalViewTabBarController {
+class PlayerTabBarViewController: AppleMusicTabBarController {
     
     var player = PlayerView()
     
