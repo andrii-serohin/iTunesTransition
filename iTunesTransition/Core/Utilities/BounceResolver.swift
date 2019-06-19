@@ -10,12 +10,12 @@ import UIKit
 
 fileprivate class TransformUtility {
     
-    var scrollUpdater: ScrollUpdater
+    var scrollUpdater: BounceResolver
     var isNeedNormalize: Bool = false
     
     private var deltaY: CGFloat?
     
-    init(scrollUpdater: ScrollUpdater) {
+    init(scrollUpdater: BounceResolver) {
         self.scrollUpdater = scrollUpdater
     }
     
@@ -34,7 +34,7 @@ fileprivate class TransformUtility {
     }
 }
 
-final class ScrollUpdater: NSObject {
+final class BounceResolver: NSObject {
     
     private(set) var isDismissEnabled = false
     
@@ -57,6 +57,14 @@ final class ScrollUpdater: NSObject {
         return rootView?.transform ?? .identity
     }
 
+    init?(rootView: UIView) {
+        guard let scrollView = rootView.detectedScrollView else { return nil }
+        super.init()
+        self.rootView = rootView
+        self.scrollView = scrollView
+        scrollView.delegate = self
+        transformNormalizer = TransformUtility(scrollUpdater: self)
+    }
     
     init(rootView: UIView, scrollView: UIScrollView) {
         super.init()
@@ -103,7 +111,7 @@ final class ScrollUpdater: NSObject {
     
 }
 
-extension ScrollUpdater: UIScrollViewDelegate {
+extension BounceResolver: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollViewDidScroll()

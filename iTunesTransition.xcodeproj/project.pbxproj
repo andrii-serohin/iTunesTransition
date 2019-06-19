@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4CFB10CA204F7A0F0053C27C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFB10C9204F7A0F0053C27C /* Constants.swift */; };
-		4CFB10CE204F963A0053C27C /* PercentInteractiveAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFB10CD204F963A0053C27C /* PercentInteractiveAnimator.swift */; };
+		4CFB10CE204F963A0053C27C /* AppleMusicPercentDrivenInteractiveAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFB10CD204F963A0053C27C /* AppleMusicPercentDrivenInteractiveAnimator.swift */; };
 		76774FCF204D7176008B6F3D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76774FCE204D7176008B6F3D /* AppDelegate.swift */; };
 		76774FD4204D7176008B6F3D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76774FD2204D7176008B6F3D /* Main.storyboard */; };
 		76774FD6204D7176008B6F3D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76774FD5204D7176008B6F3D /* Assets.xcassets */; };
@@ -16,9 +16,12 @@
 		76774FEF204D739F008B6F3D /* PlayerTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76774FEE204D739F008B6F3D /* PlayerTabBarViewController.swift */; };
 		76774FF2204D78DD008B6F3D /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76774FF1204D78DD008B6F3D /* PlayerView.swift */; };
 		76774FF7204D84AB008B6F3D /* TrackDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76774FF6204D84AB008B6F3D /* TrackDetailsViewController.swift */; };
-		76774FF9204D96FB008B6F3D /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76774FF8204D96FB008B6F3D /* PresentationController.swift */; };
-		B152B85520DE3E1B00B9252A /* UIViewController+ScrollViewDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B152B85420DE3E1B00B9252A /* UIViewController+ScrollViewDetection.swift */; };
-		B152B85920DE453100B9252A /* ScrollUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = B152B85820DE453100B9252A /* ScrollUpdater.swift */; };
+		76774FF9204D96FB008B6F3D /* AppleMusicPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76774FF8204D96FB008B6F3D /* AppleMusicPresentationController.swift */; };
+		B152B85520DE3E1B00B9252A /* UIView+ScrollViewDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B152B85420DE3E1B00B9252A /* UIView+ScrollViewDetection.swift */; };
+		B152B85920DE453100B9252A /* BounceResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B152B85820DE453100B9252A /* BounceResolver.swift */; };
+		B154BE6720F8D73000B6FCF3 /* FlexibleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B154BE6620F8D73000B6FCF3 /* FlexibleViewController.swift */; };
+		B154BE6920F8E07C00B6FCF3 /* UITabBar+Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B154BE6820F8E07C00B6FCF3 /* UITabBar+Snapshot.swift */; };
+		B154BE6B20F8E66D00B6FCF3 /* AppleMusicTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B154BE6A20F8E66D00B6FCF3 /* AppleMusicTabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,7 +36,7 @@
 
 /* Begin PBXFileReference section */
 		4CFB10C9204F7A0F0053C27C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		4CFB10CD204F963A0053C27C /* PercentInteractiveAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentInteractiveAnimator.swift; sourceTree = "<group>"; };
+		4CFB10CD204F963A0053C27C /* AppleMusicPercentDrivenInteractiveAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicPercentDrivenInteractiveAnimator.swift; sourceTree = "<group>"; };
 		76774FCB204D7176008B6F3D /* iTunesTransition.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTunesTransition.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76774FCE204D7176008B6F3D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		76774FD3204D7176008B6F3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -44,9 +47,12 @@
 		76774FEE204D739F008B6F3D /* PlayerTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerTabBarViewController.swift; sourceTree = "<group>"; };
 		76774FF1204D78DD008B6F3D /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		76774FF6204D84AB008B6F3D /* TrackDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailsViewController.swift; sourceTree = "<group>"; };
-		76774FF8204D96FB008B6F3D /* PresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
-		B152B85420DE3E1B00B9252A /* UIViewController+ScrollViewDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ScrollViewDetection.swift"; sourceTree = "<group>"; };
-		B152B85820DE453100B9252A /* ScrollUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollUpdater.swift; sourceTree = "<group>"; };
+		76774FF8204D96FB008B6F3D /* AppleMusicPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicPresentationController.swift; sourceTree = "<group>"; };
+		B152B85420DE3E1B00B9252A /* UIView+ScrollViewDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ScrollViewDetection.swift"; sourceTree = "<group>"; };
+		B152B85820DE453100B9252A /* BounceResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BounceResolver.swift; sourceTree = "<group>"; };
+		B154BE6620F8D73000B6FCF3 /* FlexibleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleViewController.swift; sourceTree = "<group>"; };
+		B154BE6820F8E07C00B6FCF3 /* UITabBar+Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITabBar+Snapshot.swift"; sourceTree = "<group>"; };
+		B154BE6A20F8E66D00B6FCF3 /* AppleMusicTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicTabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,16 +102,12 @@
 		76774FCD204D7176008B6F3D /* iTunesTransition */ = {
 			isa = PBXGroup;
 			children = (
-				76774FF3204D8131008B6F3D /* Animator */,
-				76774FCE204D7176008B6F3D /* AppDelegate.swift */,
+				B16379A420FCA6E8004416A7 /* Demo */,
 				76774FD5204D7176008B6F3D /* Assets.xcassets */,
-				4CFB10C9204F7A0F0053C27C /* Constants.swift */,
-				4CFB10C8204F791F0053C27C /* Controller */,
+				B154BE6C20F8EEF800B6FCF3 /* Core */,
 				76774FDA204D7176008B6F3D /* Info.plist */,
 				76774FD7204D7176008B6F3D /* LaunchScreen.storyboard */,
 				76774FD2204D7176008B6F3D /* Main.storyboard */,
-				B152B85620DE424000B9252A /* Utilities */,
-				76774FF0204D78CC008B6F3D /* View */,
 			);
 			path = iTunesTransition;
 			sourceTree = "<group>";
@@ -121,8 +123,8 @@
 		76774FF3204D8131008B6F3D /* Animator */ = {
 			isa = PBXGroup;
 			children = (
-				76774FF8204D96FB008B6F3D /* PresentationController.swift */,
-				4CFB10CD204F963A0053C27C /* PercentInteractiveAnimator.swift */,
+				76774FF8204D96FB008B6F3D /* AppleMusicPresentationController.swift */,
+				4CFB10CD204F963A0053C27C /* AppleMusicPercentDrivenInteractiveAnimator.swift */,
 			);
 			path = Animator;
 			sourceTree = "<group>";
@@ -131,7 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				B152B85720DE450100B9252A /* Extensions */,
-				B152B85820DE453100B9252A /* ScrollUpdater.swift */,
+				B152B85820DE453100B9252A /* BounceResolver.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -139,9 +141,40 @@
 		B152B85720DE450100B9252A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				B152B85420DE3E1B00B9252A /* UIViewController+ScrollViewDetection.swift */,
+				B152B85420DE3E1B00B9252A /* UIView+ScrollViewDetection.swift */,
+				B154BE6820F8E07C00B6FCF3 /* UITabBar+Snapshot.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B154BE6C20F8EEF800B6FCF3 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				76774FF3204D8131008B6F3D /* Animator */,
+				4CFB10C9204F7A0F0053C27C /* Constants.swift */,
+				B16379A320FCA683004416A7 /* Controller */,
+				B152B85620DE424000B9252A /* Utilities */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		B16379A320FCA683004416A7 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B154BE6620F8D73000B6FCF3 /* FlexibleViewController.swift */,
+				B154BE6A20F8E66D00B6FCF3 /* AppleMusicTabBarController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		B16379A420FCA6E8004416A7 /* Demo */ = {
+			isa = PBXGroup;
+			children = (
+				76774FCE204D7176008B6F3D /* AppDelegate.swift */,
+				76774FF0204D78CC008B6F3D /* View */,
+				4CFB10C8204F791F0053C27C /* Controller */,
+			);
+			path = Demo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,15 +280,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B154BE6920F8E07C00B6FCF3 /* UITabBar+Snapshot.swift in Sources */,
 				76774FEF204D739F008B6F3D /* PlayerTabBarViewController.swift in Sources */,
 				76774FF2204D78DD008B6F3D /* PlayerView.swift in Sources */,
-				B152B85920DE453100B9252A /* ScrollUpdater.swift in Sources */,
+				B152B85920DE453100B9252A /* BounceResolver.swift in Sources */,
 				76774FCF204D7176008B6F3D /* AppDelegate.swift in Sources */,
-				4CFB10CE204F963A0053C27C /* PercentInteractiveAnimator.swift in Sources */,
+				4CFB10CE204F963A0053C27C /* AppleMusicPercentDrivenInteractiveAnimator.swift in Sources */,
 				76774FF7204D84AB008B6F3D /* TrackDetailsViewController.swift in Sources */,
-				76774FF9204D96FB008B6F3D /* PresentationController.swift in Sources */,
+				76774FF9204D96FB008B6F3D /* AppleMusicPresentationController.swift in Sources */,
+				B154BE6B20F8E66D00B6FCF3 /* AppleMusicTabBarController.swift in Sources */,
+				B154BE6720F8D73000B6FCF3 /* FlexibleViewController.swift in Sources */,
 				4CFB10CA204F7A0F0053C27C /* Constants.swift in Sources */,
-				B152B85520DE3E1B00B9252A /* UIViewController+ScrollViewDetection.swift in Sources */,
+				B152B85520DE3E1B00B9252A /* UIView+ScrollViewDetection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,16 +8,12 @@
 
 import UIKit
 
-protocol TrackDetailsViewControllerDelegate: class{
+protocol TrackDetailsViewControllerDelegate: class {
     func trackDetailsViewController(_ viewController: TrackDetailsViewController, whanUpdate progress: CGFloat)
     func dismissThreshold(for: TrackDetailsViewController) -> CGFloat
 }
 
-class TrackDetailsViewController: UIViewController {
-    
-    private var scrollUpdater: ScrollUpdater?
-    private var panGesture: UIPanGestureRecognizer?
-    weak var delegate: TrackDetailsViewControllerDelegate?
+class TrackDetailsViewController: FlexibleViewController {
     
     private let cover: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "cover"))
@@ -26,10 +22,6 @@ class TrackDetailsViewController: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    
-    private var isAllowDismisSwipe: Bool {
-        return scrollUpdater?.isDismissEnabled ?? true
-    }
     
     private lazy var scroll: UIScrollView = {
         let scroll = UIScrollView(frame: view.bounds)
@@ -60,23 +52,13 @@ class TrackDetailsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        
         view.addSubview(scroll)
         scroll.addSubview(cover)
         scroll.addSubview(header)
 
         prepareConstreints()
         
-        header.addTarget(self, action: #selector(handleTap(_:)), for: .touchUpInside)
-
-        prepareGestureRecognizers()
-    }
-    
-    func prepareGestureRecognizers() {
-        let gesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
-        view.addGestureRecognizer(gesture)
-        panGesture = gesture
-        panGesture?.delegate = self
+        header.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
     }
     
     func prepareConstreints() {
@@ -105,7 +87,7 @@ class TrackDetailsViewController: UIViewController {
                                      scroll.heightAnchor.constraint(equalTo: view.heightAnchor)].compactMap { $0 })
     }
     
-    func shrinkContent() {
+    override func onShrink() {
         header.isHidden = true
         cover.layer.cornerRadius = 3
         
@@ -120,7 +102,9 @@ class TrackDetailsViewController: UIViewController {
         headerWidthConstraint?.constant = 0
     }
     
-    func expandContent() {
+    
+    
+    override func onExpand() {
         header.isHidden = false
         headerLeftConstraint?.constant = (view.bounds.width - 100) / 2
         headerTopConstraint?.constant = 10
@@ -137,37 +121,6 @@ class TrackDetailsViewController: UIViewController {
         
     }
     
-    private func updatePresentedView(for translation: CGFloat, onProgress value: CGFloat) {
-        
-        
-        let threshold = delegate?.dismissThreshold(for: self) ?? 350
-        
-        guard translation >= 0 else { return }
-        delegate?.trackDetailsViewController(self, whanUpdate: value)
-        view.transform = scrollUpdater?.normalizeY(translation: elasticTranslation(for: translation)) ?? .identity
-
-        if translation >= threshold {
-            dismiss(animated: true)
-        }
-        
-    }
-    
-    private func elasticTranslation(for translation: CGFloat) -> CGFloat {
-        
-        let threshold: CGFloat = 120
-        let factor: CGFloat = 1/2
-        
-        guard translation >= threshold else {
-            return translation * factor
-        }
-        
-        let length = translation - threshold
-        let friction = 30 * atan(length / 120) + length / 3
-        return friction + (threshold * factor)
-        
-    }
-    
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -176,62 +129,8 @@ class TrackDetailsViewController: UIViewController {
 
 @objc extension TrackDetailsViewController {
     
-    private func handleTap(_ sender: UITapGestureRecognizer) {
+    private func handleTap() {
         dismiss(animated: true)
-    }
-    
-    private func handlePan(gesture: UIPanGestureRecognizer) {
-        
-        guard !isBeingDismissed else {
-            gesture.isEnabled = false
-            return
-        }
-        
-        guard gesture.isEqual(panGesture), isAllowDismisSwipe  else { return }
-        
-        let transition = gesture.translation(in: view)
-        let progress = transition.y / (view.frame.height - Constants.playerHeight)
-        
-        switch gesture.state {
-        case .began:
-            
-            guard scrollUpdater == nil, let scrollView = detectedScrollView else { return }
-            scrollUpdater = ScrollUpdater(rootView: self.view, scrollView: scrollView)
-            
-        case .changed:
-            
-            guard isAllowDismisSwipe else { return }
-            updatePresentedView(for: transition.y, onProgress: progress)
-            
-        case .ended:
-
-            guard isAllowDismisSwipe else { return }
-            
-            guard progress > 0.2 else {
-                UIView.animate(withDuration: 0.2 + Double(progress) * 0.2,
-                               delay: 0,
-                               options: .curveEaseInOut,
-                               animations: {
-                    self.delegate?.trackDetailsViewController(self, whanUpdate: 0)
-                    self.view.transform = .identity
-                })
-                return
-            }
-            
-            dismiss(animated: true)
-            
-        default:
-            break
-        }
-        
-    }
-    
-}
-
-extension TrackDetailsViewController: UIGestureRecognizerDelegate {
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return gestureRecognizer.isEqual(panGesture)
     }
     
 }

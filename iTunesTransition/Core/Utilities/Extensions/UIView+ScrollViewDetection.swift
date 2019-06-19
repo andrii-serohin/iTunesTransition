@@ -8,10 +8,10 @@
 
 import UIKit
 
-extension UIViewController {
+extension UIView {
     
     var detectedScrollView: UIScrollView? {
-        return view.subviews.first { $0 is UIScrollView } as? UIScrollView
+        return subviews.first { $0 is UIScrollView } as? UIScrollView
     }
     
 }
